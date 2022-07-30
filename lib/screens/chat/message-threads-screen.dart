@@ -11,7 +11,7 @@ class MessageThreadsScreen extends StatefulWidget {
 }
 
 class _MessageThreadsScreenState extends State<MessageThreadsScreen> {
-  final TextEditingController searchController = new TextEditingController();
+  final searchController = new TextEditingController();
   final dataStoreService = DataStoreService();
   final User user = FirebaseAuth.instance.currentUser;
   List threadList = [];

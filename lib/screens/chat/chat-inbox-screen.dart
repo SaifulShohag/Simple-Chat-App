@@ -54,7 +54,7 @@ class ChatInboxScreen extends StatelessWidget {
               msgController: msgController,
               onPressed: () async {
                 if(msgController.text.trim().isNotEmpty) {
-                  await dataStoreService.sendInboxMessage(user, threadID, message: msgController.text.trim(), rUid: otherUser['uid']);
+                  await dataStoreService.sendInboxMessage(user.uid, threadID, message: msgController.text.trim(), rUid: otherUser['uid']);
                   msgController.clear();
                   FocusScope.of(context).requestFocus(new FocusNode());
                 }

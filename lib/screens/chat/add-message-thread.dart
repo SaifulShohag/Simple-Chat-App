@@ -1,4 +1,4 @@
-import 'package:artist_recruit/Widgets/user-list.dart';
+import 'package:artist_recruit/screens/chat/contact-list.dart';
 import 'package:artist_recruit/services/datastore-service.dart';
 import 'package:artist_recruit/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,9 +24,7 @@ class AddMessageThread extends StatelessWidget {
             List allUsers = snapshot.data;
             allUsers = allUsers.where((el) => el['uid'] != user.uid).toList();
             return SingleChildScrollView(
-              child: Center(
-                child: UserList(allUsers: allUsers)
-              ),
+              child: ContactList(allUsers: allUsers),
             );
           }
           return Center(child: CircularProgressIndicator());

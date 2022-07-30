@@ -119,9 +119,9 @@ class DataStoreService {
     return [...data, ...data2] ?? [];
   }
 
-  Future sendInboxMessage(User user, String threadID, {String rUid, String message}) async {
+  Future sendInboxMessage(String uid, String threadID, {String rUid, String message}) async {
     var msgData = {
-      'sender': user.uid,
+      'sender': uid,
       'recipient': rUid,
       'message': message,
       'timeStamp': DateTime.now().millisecondsSinceEpoch,
