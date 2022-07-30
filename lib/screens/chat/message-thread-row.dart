@@ -31,11 +31,6 @@ class MessageThreadRow extends StatelessWidget {
             child: CircleAvatar(
               radius: 30.0,
               backgroundImage: NetworkImage(imgUrl),
-              // onBackgroundImageError: (_, __) async {
-              //   var userArt = await dataStoreService.getUserArtsDataByUid(context, ua['likedUID']);
-              //   dataStoreService.updateLikedUsersPhotoURL(docID: ua['id'], key: 'likedPhotoURL', photoURL: userArt['photoURL']);
-              //   setState(() => photoUrl = userArt['photoURL']);
-              // },
             ),
           ),
           Expanded(

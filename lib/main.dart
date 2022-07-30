@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Course Selection System',
+      title: 'Simple Chat App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: AppBarTheme(
@@ -33,6 +33,9 @@ class _MyAppState extends State<MyApp> {
           )
         ),
         primaryColor: primaryColor,
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: primaryColor,
+        ),
       ),
       home: AuthenticationWrapper(),
     );

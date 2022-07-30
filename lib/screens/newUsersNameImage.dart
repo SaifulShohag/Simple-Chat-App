@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:artist_recruit/Widgets/bottom-modal.dart';
+import 'package:artist_recruit/screens/home-page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:artist_recruit/Widgets/text-input-field.dart';
@@ -95,7 +96,7 @@ class _NewUsersNameImageState extends State<NewUsersNameImage> {
           await user.updateDisplayName(nameController.text.trim());
           await dataStore.createNewUser(user, photoURL: value, fullName: nameController.text.trim());
           Navigator.popUntil(context, (route) => route.isFirst);
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
         });
       }
     }
@@ -118,7 +119,7 @@ class _NewUsersNameImageState extends State<NewUsersNameImage> {
                     onTap: () => selectImage(context),
                     child: CircleAvatar(
                       radius: 105.0,
-                      backgroundColor: Colors.white,
+                      backgroundColor: primaryColor,
                       child: CircleAvatar(
                         radius: 100.0,
                         backgroundImage: _image == null ? AssetImage(imageUrl) : FileImage(_image),

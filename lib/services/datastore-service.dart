@@ -15,23 +15,14 @@ class DataStoreService {
     });
     return newUser;
   }
-  
-  Future getUserDataErrorHandler(context, {User user}) async {
-    Map data = {};
-    String id = '';
-    var res = await dataStore.collection('users').where('uid', isEqualTo: user.uid).get();
-    if(res.docs.length < 1) {
-      await user.updateDisplayName('');
-      await user.updatePhotoURL(null);
-      Navigator.popUntil(context, (route) => route.isFirst);
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
-    } else {
-      res.docs.forEach((element) {
-        id = element.id;
-        data = element.data();
-      });
-      return {'id': id, ...data};
-    }
+
+  Future getAllUsers() async {
+    List data = [];
+    var res = await dataStore.collection('users').get();
+    res.docs.forEach((element) {
+      data.add({'id': element.id, ...element.data()});
+    });
+    return data;
   }
 
   Future getUserDataByUid(String uid) async {
@@ -51,16 +42,10 @@ class DataStoreService {
     return 'done';
   }
 
-  Future updateDisplayName({String docID, String fullName}) async {
+  Future updateUserProfile({String docID, String fullName, String photoURL}) async {
     await dataStore.collection('users').doc(docID).update({
       'fullName': fullName,
-    });
-    return 'done';
-  }
-
-  Future updateProfilePicture({String docID, String photoURL}) async {
-    await dataStore.collection('users').doc(docID).update({
-      'photoURL': photoURL,
+      'photoURL': photoURL
     });
     return 'done';
   }

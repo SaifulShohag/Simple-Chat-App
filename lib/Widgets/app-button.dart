@@ -20,7 +20,7 @@ class AppButton extends StatelessWidget {
           side: BorderSide(color: Colors.transparent),
         ),
         padding: EdgeInsets.symmetric(vertical: verticalPadding ?? 7.0, horizontal: horizontalPadding ?? 20.0),
-        primary: buttonColor ?? buttonColor,
+        primary: buttonColor ?? primaryColor,
       ),
       onPressed: onTap,
       child: Text(this.title, style: textStyle ?? buttonTextBold),
