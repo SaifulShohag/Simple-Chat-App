@@ -24,7 +24,6 @@ class _MessageThreadsScreenState extends State<MessageThreadsScreen> {
     super.initState();
   }
 
-
   getThreadList() async {
     searchController.clear();
     List list = await dataStoreService.getUserMessageThreadList(context, user) ?? [];

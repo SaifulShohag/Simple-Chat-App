@@ -48,7 +48,7 @@ class ChatInboxScreen extends StatelessWidget {
             }
           ),
           Container(
-            padding: const EdgeInsets.only(left: 5.0, bottom: 5.0, top: 5.0),
+            padding: const EdgeInsets.only(left: 5.0, bottom: 10.0, top: 5.0),
             color: Colors.grey[300],
             child: MessageInputField(
               msgController: msgController,
