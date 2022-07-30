@@ -1,4 +1,4 @@
-package com.saifulfools.courseSelectionSystem
+package com.saifulfools.simpleChatApp
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -109,27 +109,22 @@ TextStyle secondaryButtonText = TextStyle(
   fontSize: 15.0,
 );
 
-TextStyle redTextStyle = TextStyle(
-  color: Colors.red[700], 
-  fontSize: 15.0
+TextStyle messageText = TextStyle(
+  color: lightBlackColor, 
+  fontSize: 15.0,
 );
-
-
-TextStyle interestItemText = TextStyle(
-  color: blackTextColor,
-  fontSize: 16.0,
+TextStyle messageTextBlack = TextStyle(
+  fontSize: 15.0,
 );
-
-TextStyle giftTitle = TextStyle(
+TextStyle messageTextBold = TextStyle(
   fontWeight: FontWeight.bold,
-  color: blackTextColor,
+  color: lightBlackColor, 
   fontSize: 15.0,
 );
 
-TextStyle uaTitleStyle = TextStyle(
-  fontWeight: FontWeight.bold,
-  color: blackTextColor,
-  fontSize: 15.0,
+TextStyle messageDateText = TextStyle(
+  color: lightBlackColor, 
+  fontSize: 11.0
 );
 
 

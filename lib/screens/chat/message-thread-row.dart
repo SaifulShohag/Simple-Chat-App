@@ -20,7 +20,7 @@ class MessageThreadRow extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: swipeCardBorderColor, width: 2.0),
+          bottom: BorderSide(color: lightBlackColor, width: 2.0),
         ),
       ),
       child: Row(
@@ -45,7 +45,7 @@ class MessageThreadRow extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 17.0),
-                  child: Text(username, style: subheadTextBlack),
+                  child: Text(username, style: subheadText),
                 ),
                 // Text(userType, style: smallText),
                 SizedBox(height: 3.0,),

@@ -1,4 +1,3 @@
-import 'package:artist_recruit/utils/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +9,7 @@ import 'package:artist_recruit/services/datastore-service.dart';
 class ChatInboxScreen extends StatelessWidget {
   final otherUser;
   final String threadID;
-  final bool isBlocked;
-  ChatInboxScreen({@required this.otherUser, @required this.threadID, @required this.isBlocked});
+  ChatInboxScreen({@required this.otherUser, @required this.threadID});
 
   final msgController = TextEditingController();
   final dataStoreService = DataStoreService();
@@ -27,7 +25,6 @@ class ChatInboxScreen extends StatelessWidget {
         child: MsgAppBar(
           uid: otherUser['uid'], username: otherUser['username'], 
           imgUrl: otherUser['photoURL'] ?? 'https://qph.fs.quoracdn.net/main-qimg-2b21b9dd05c757fe30231fac65b504dd',
-          isBlocked: isBlocked,
         ),
       ),
       body: Column(
@@ -53,22 +50,15 @@ class ChatInboxScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(left: 5.0, bottom: 5.0, top: 5.0),
             color: Colors.grey[300],
-            child: Visibility(
-              visible: !isBlocked,
-              child: MessageInputField(
-                msgController: msgController,
-                onPressed: () async {
-                    if(msgController.text.trim().isNotEmpty) {
-                      await dataStoreService.sendInboxMessage(user, threadID, message: msgController.text.trim(), rUid: otherUser['uid']);
-                      msgController.clear();
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                    }
-                },
-              ),
-              replacement: Padding(
-                padding: const EdgeInsets.only(right: 5.0, top: 10.0, bottom: 15.0),
-                child: Center(child: Text('This message thread has been disabled', style: redTextStyle,),),
-              ),
+            child: MessageInputField(
+              msgController: msgController,
+              onPressed: () async {
+                if(msgController.text.trim().isNotEmpty) {
+                  await dataStoreService.sendInboxMessage(user, threadID, message: msgController.text.trim(), rUid: otherUser['uid']);
+                  msgController.clear();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                }
+              },
             ),
           ), 
         ],
