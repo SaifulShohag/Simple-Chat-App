@@ -1,3 +1,4 @@
+import 'package:artist_recruit/screens/user-profile-screen.dart';
 import 'package:artist_recruit/services/datastore-service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:artist_recruit/services/authencation-service.dart';
@@ -36,7 +37,7 @@ class AppTopBar extends StatelessWidget {
             Icons.person_sharp,
           ), 
           onPressed: () {
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen()));
           },
         ),
         IconButton(
