@@ -1,17 +1,14 @@
 import 'package:artist_recruit/screens/chat/chat-inbox-screen.dart';
 import 'package:artist_recruit/screens/chat/message-thread-row.dart';
 import 'package:artist_recruit/services/datastore-service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessageThreadsScreen extends StatelessWidget {
   final User user = FirebaseAuth.instance.currentUser;
   final dataStoreService = DataStoreService();
-
-  Stream<List> getThreadList() async* {
-    var threadList = await dataStoreService.getUserMessageThreadList(user);
-    yield threadList;
-  }
+  final CollectionReference threadCollection = FirebaseFirestore.instance.collection('messageThreads');
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +16,11 @@ class MessageThreadsScreen extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
       child: SingleChildScrollView(
         child: StreamBuilder(
-          stream: getThreadList(),
+          stream: threadCollection.where('user2.uid', isEqualTo: user.uid).snapshots(),
           builder: (context, snapshot) {
             if(snapshot.hasData && !snapshot.hasError ) {
-              var thread = snapshot.data ?? [];
-              var userThreads = [...thread];    
-              userThreads.sort((a, b) => b['lastMessage']['timeStamp'].compareTo(a['lastMessage']['timeStamp']));
+              var userThreads = snapshot.data.docs ?? [];
+              // userThreads.sort((a, b) => b['lastMessage']['timeStamp'].compareTo(a['lastMessage']['timeStamp']));
               return Column(
                 children: [
                   if(userThreads.isEmpty) Center(
