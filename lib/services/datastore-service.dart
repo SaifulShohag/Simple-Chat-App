@@ -87,7 +87,7 @@ class DataStoreService {
     return 'done';
   }
 
-  Future getUserMessageThreadList(context, User user) async {
+  Future<List> getUserMessageThreadList(User user) async {
     List data = [];
     List data2 = [];
 
