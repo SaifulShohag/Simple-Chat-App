@@ -8,7 +8,7 @@
   
     <application
         android:name="androidx.multidex.MultiDexApplication"
-        android:label="Course Selection System"
+        android:label="Simple Chat App"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
