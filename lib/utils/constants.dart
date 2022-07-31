@@ -3,22 +3,25 @@ import 'package:flutter/material.dart';
 
 const String addImgUrl = 'https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png';
 const String noImage = 'https://rentalzone.in/public/frontend/images/no-image-found.png?v=1629805409';
-Color primaryColor = Color(0xff259c72);
-Color buttonColor = Color(0xff1274e0);
-Color secondaryBtnColor = Color(0xffe0e0e0);
-Color whiteButtonColor = Colors.white;
-Color iconBtnColorWhite = Color(0xffffffff);
+const Color primaryColor = Color(0xff259c72);
+const Color onBoardBGColor = Color(0xff45a89e);
+const Color buttonColor = Color(0xff1274e0);
+const Color secondaryBtnColor = Color(0xffe0e0e0);
+const Color whiteButtonColor = Colors.white;
+const Color iconBtnColorWhite = Color(0xffffffff);
 
-Color buttonTextColor = Color(0xffffffff);
-Color secondarButtonTextColor = Color(0xff282728);
+const Color buttonTextColor = Color(0xffffffff);
+const Color secondarButtonTextColor = Color(0xff282728);
 
-Color textInputBorderColor = Color(0xff282728);
-Color blackTextColor = Color(0xff282728);
-Color lightBlackColor = Color(0xff525151);
+const Color textInputBorderColor = Color(0xff282728);
+const Color blackTextColor = Color(0xff282728);
+const Color lightBlackColor = Color(0xff525151);
 
-TextStyle homePageText = TextStyle(
-  color: blackTextColor,
-  fontSize: 20,
+TextStyle headerText = TextStyle(
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontSize: 20.0,
+  height: 1.5,
 );
 
 TextStyle titleText = TextStyle(

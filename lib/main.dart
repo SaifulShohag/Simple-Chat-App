@@ -1,6 +1,8 @@
 import 'package:artist_recruit/listeners/fileNotifier.dart';
 import 'package:artist_recruit/listeners/threadNotifier.dart';
 import 'package:artist_recruit/listeners/userListNotifier.dart';
+import 'package:artist_recruit/screens/onBoardScreen.dart';
+import 'package:artist_recruit/services/localDB-service.dart';
 import 'package:flutter/material.dart';
 import 'package:artist_recruit/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,9 +11,11 @@ import 'package:artist_recruit/screens/home-page.dart';
 import 'package:artist_recruit/screens/auth/signIn-page.dart';
 import 'package:provider/provider.dart';
 
+final localDB = LocalDBService();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await localDB.initService();
   runApp(
     MultiProvider(
       providers: [
@@ -62,7 +66,11 @@ class AuthenticationWrapper extends StatelessWidget {
         if(snapshot.hasData && snapshot.data != null) {
           return HomePage();
         }
-        return SignInPage();
+        return Visibility(
+          visible: localDB.isFirstLaunch() != null,
+          child: SignInPage(),
+          replacement: OnBoardScreen(),
+        );
       },
     );
   }

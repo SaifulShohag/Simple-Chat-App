@@ -35,12 +35,12 @@ class _MessageThreadsScreenState extends State<MessageThreadsScreen> {
         child: Column(
           children: [
             if(context.watch<ThreadNotifier>().threadList.isEmpty) Center(
-                child: Text(
-                  "You haven't added any user yet. Please click on the \"+\" button to start chatting.",
-                  textAlign: TextAlign.center,
-                ),
+              child: Text(
+                "You haven't added any user yet. Please click on the \"+\" button to start chatting.",
+                textAlign: TextAlign.center,
               ),
-            for(var thread in context.watch<ThreadNotifier>().threadList) GestureDetector(
+            ),
+            for(var thread in context.watch<ThreadNotifier>().threadList ?? []) GestureDetector(
               onTap: () {
                 dataStoreService.messageBeingSeen(context, user, thread);
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => 
