@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:artist_recruit/Widgets/bottom-modal.dart';
+import 'package:artist_recruit/listeners/fileNotifier.dart';
 import 'package:artist_recruit/screens/home-page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -9,6 +10,7 @@ import 'package:artist_recruit/Widgets/app-button.dart';
 import 'package:artist_recruit/services/image-service.dart';
 import 'package:artist_recruit/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class NewUsersNameImage extends StatefulWidget {
   @override
@@ -82,7 +84,8 @@ class _NewUsersNameImageState extends State<NewUsersNameImage> {
           title: 'Cropper',
         ));
     if (croppedFile != null) {
-      setState(() => _image = croppedFile);
+      _image = croppedFile;
+      context.read<ImageFileNotifier>().updateValue(_image);
     }
   }
 
@@ -98,6 +101,7 @@ class _NewUsersNameImageState extends State<NewUsersNameImage> {
           Navigator.popUntil(context, (route) => route.isFirst);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
         });
+        context.read<ImageFileNotifier>().setValue = null;
       }
     }
 
@@ -122,7 +126,8 @@ class _NewUsersNameImageState extends State<NewUsersNameImage> {
                       backgroundColor: primaryColor,
                       child: CircleAvatar(
                         radius: 100.0,
-                        backgroundImage: _image == null ? AssetImage(imageUrl) : FileImage(_image),
+                        backgroundImage: context.watch<ImageFileNotifier>().images == null ? 
+                          AssetImage(imageUrl) : FileImage(_image),
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:artist_recruit/Widgets/image-card.dart';
 import 'package:artist_recruit/Widgets/text-input-field.dart';
+import 'package:artist_recruit/listeners/fileNotifier.dart';
 import 'package:artist_recruit/main.dart';
 import 'package:artist_recruit/services/datastore-service.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:artist_recruit/Widgets/bottom-modal.dart';
 import 'package:artist_recruit/services/image-service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatefulWidget {
   @override
@@ -86,7 +88,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           title: 'Cropper',
         ));
     if (croppedFile != null) {
-      setState(() => images = croppedFile);
+      images = croppedFile;
+      context.read<ImageFileNotifier>().updateValue(images);
     }
   }
 
@@ -103,13 +106,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   saveChanges() async {
     preventDoubleTap(context);
-    if(images == null) {print("caught empty");} else {
+    context.read<ImageFileNotifier>().setValue = null;
+    if(images == null) {} else {
       photoUrl = await imageService.reUploadImage(context, images, user.photoURL);
-      await user.updatePhotoURL(photoUrl);
+      user.updatePhotoURL(photoUrl);
     }
-    await dataStoreService.updateUserProfile(docID: userData['id'], fullName: nameController.text.trim(), photoURL: user.photoURL,);  
-    user.updateDisplayName(nameController.text.trim());
+    dataStoreService.updateUserProfile(docID: userData['id'], fullName: nameController.text.trim(), photoURL: user.photoURL,);  
+    await user.updateDisplayName(nameController.text.trim());
     Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> AuthenticationWrapper()), 
+      (Route route) => false);
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> UserProfileScreen()));
   }
 
   @override
@@ -127,72 +134,76 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             onPressed: () async {
               if(_formKey.currentState.validate()) {
                 await saveChanges();
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> AuthenticationWrapper()), 
-                (Route route) => false);
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> UserProfileScreen()));
               }
             },
             child: Text('Save', style: titleTextWhite,),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 10.0,),
-            ImageCard(
-              onTap:() => selectImage(context),
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.white,
-                    width: size.width * 0.91,
-                    child: CircleAvatar(
-                      backgroundColor: blackTextColor,
-                      radius: size.width * 0.45,
+      body: WillPopScope(
+        onWillPop: () async {
+          context.read<ImageFileNotifier>().setValue = null;
+          return true;
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 10.0,),
+              ImageCard(
+                onTap:() => selectImage(context),
+                child: Column(
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      width: size.width * 0.91,
                       child: CircleAvatar(
-                        radius: size.width * 0.445,
-                        backgroundImage: images == null ?  NetworkImage(user.photoURL) : FileImage(images),
+                        backgroundColor: blackTextColor,
+                        radius: size.width * 0.45,
+                        child: CircleAvatar(
+                          radius: size.width * 0.445,
+                          backgroundImage: context.watch<ImageFileNotifier>().images == null ?  
+                            NetworkImage(user.photoURL) : FileImage(images),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 7.0,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 3.0),
-                        child: FaIcon(FontAwesomeIcons.edit, size: 17.0,),
-                      ),
-                      SizedBox(width: 4.0,),
-                      Text('Edit Profile Image', style: subheadText,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.0, width: double.infinity,),
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.025),
-                child: TextInputField(
-                  label: 'Full Name',
-                  controller: nameController,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Enter your Full Name';
-                    } else if(value.length < 3) {
-                      return 'Enter a valid full name';
-                    } else {
-                      return null;
-                    }
-                  },
+                    SizedBox(height: 7.0,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 3.0),
+                          child: FaIcon(FontAwesomeIcons.edit, size: 17.0,),
+                        ),
+                        SizedBox(width: 4.0,),
+                        Text('Edit Profile Image', style: subheadText,),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            )
-          ],
+              SizedBox(height: 10.0, width: double.infinity,),
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.025),
+                  child: TextInputField(
+                    label: 'Full Name',
+                    controller: nameController,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Enter your Full Name';
+                      } else if(value.length < 3) {
+                        return 'Enter a valid full name';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

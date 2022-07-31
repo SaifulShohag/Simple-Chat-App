@@ -56,7 +56,6 @@ class ImageService {
       preventDoubleTap(context);
       var snapShot = await _storage.ref().child(DateTime.now().millisecondsSinceEpoch.toString())
           .putFile(file);
-      //Deleting previous image file for cloud storage
       if(Uri.tryParse(previousUrl ?? '')?.hasAbsolutePath ?? false) await FirebaseStorage.instance
         .refFromURL(previousUrl).delete().catchError((_) => '');
       var downloadUrl = await snapShot.ref.getDownloadURL();

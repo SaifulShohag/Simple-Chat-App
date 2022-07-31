@@ -1,3 +1,7 @@
+import 'package:artist_recruit/listeners/fileNotifier.dart';
+import 'package:artist_recruit/listeners/threadNotifier.dart';
+import 'package:artist_recruit/listeners/userListNotifier.dart';
+import 'package:artist_recruit/screens/home-page.dart';
 import 'package:artist_recruit/screens/user-profile-screen.dart';
 import 'package:artist_recruit/services/datastore-service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +9,7 @@ import 'package:artist_recruit/services/authencation-service.dart';
 import 'package:artist_recruit/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:artist_recruit/main.dart';
+import 'package:provider/provider.dart';
 
 class AppTopBar extends StatelessWidget {
   final User user;
@@ -34,6 +39,14 @@ class AppTopBar extends StatelessWidget {
       actions: [
         IconButton(
           icon: Icon(
+            Icons.refresh,
+          ), 
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+          },
+        ),
+        IconButton(
+          icon: Icon(
             Icons.person_sharp,
           ), 
           onPressed: () {
@@ -46,6 +59,9 @@ class AppTopBar extends StatelessWidget {
           ), 
           onPressed: () async {
             await authService.signOut();
+            context.read<ThreadNotifier>().setValue = [];
+            context.read<ImageFileNotifier>().setValue = null;
+            context.read<UserListNotifier>().setValue = [];
             Navigator.popUntil(context, (route) => route.isFirst);
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
           },

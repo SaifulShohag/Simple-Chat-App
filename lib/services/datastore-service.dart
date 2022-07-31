@@ -34,14 +34,6 @@ class DataStoreService {
     return data;
   }
 
-  Future updateStudentData({String docID, String fullName, String userID}) async {
-    await dataStore.collection('users').doc(docID).update({
-      'fullName': fullName,
-      'userID': userID,
-    });
-    return 'done';
-  }
-
   Future updateUserProfile({String docID, String fullName, String photoURL}) async {
     await dataStore.collection('users').doc(docID).update({
       'fullName': fullName,

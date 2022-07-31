@@ -1,10 +1,12 @@
 import 'package:artist_recruit/Widgets/image-card.dart';
+import 'package:artist_recruit/listeners/userListNotifier.dart';
 import 'package:artist_recruit/screens/chat/message-input-field.dart';
 import 'package:artist_recruit/screens/home-page.dart';
 import 'package:artist_recruit/services/datastore-service.dart';
 import 'package:artist_recruit/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ContactList extends StatefulWidget {
   final List allUsers;
@@ -71,13 +73,11 @@ class _ContactListState extends State<ContactList> {
         return contactName.contains(searchTerm);  
       });
 
-      setState(() {
-        filteredUsers = _users;
-      });
+      filteredUsers = _users;
+      context.read<UserListNotifier>().updateValue(filteredUsers);
     } else {
-      setState(() {
-        filteredUsers = allUsers;
-      });
+      filteredUsers = allUsers;
+      context.read<UserListNotifier>().updateValue(filteredUsers);
     }
   }
 
@@ -95,7 +95,7 @@ class _ContactListState extends State<ContactList> {
           ),
         ),
         SizedBox(height: 30.0,),
-        for (var user in filteredUsers) ImageCard(
+        for (var user in context.watch<UserListNotifier>().userList) ImageCard(
           bottomMargin: 10.0,
           horizontalPadding: 3.0,
           verticalPadding: 2.0,
